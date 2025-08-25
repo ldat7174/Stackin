@@ -1,0 +1,45 @@
+version: '3.8'
+services: 
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    volumes:
+      -
+    ports: 
+      -"8000:8000"
+    depends_on: db
+    environment:
+      - name=value
+    command: >
+      sh -c "python manage.py migrate && configs:
+      python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    volumes:
+      -
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - backend
+    command: ["npm","start"]
+
+  DB:
+    image: MySQL:8.0
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 01052005
+      MYSQL_DATABASE: Stackin
+      MySQL_USER: root
+      MYSQL_PASSWORD: 
+    volumes:
+      - 
+    ports:
+      - "3306:3306"
+
+volumes:
+  MySQL_data:
